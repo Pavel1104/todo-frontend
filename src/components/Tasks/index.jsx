@@ -146,7 +146,7 @@ const Tasks = (projectData) => {
                   data-tooltip={priority}
                   onClick={() => changePriority(id, priority + 1)}
                 >
-                  Priority up
+                  P up
                 </button>
                 <button
                   className={classes.priorityDown}
@@ -155,7 +155,7 @@ const Tasks = (projectData) => {
                   disabled={priority === 0}
                   onClick={(e) => changePriority(id, priority - 1)}
                 >
-                  Priority down
+                  P down
                 </button>
               </div>
               <button
