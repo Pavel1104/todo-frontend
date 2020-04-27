@@ -1,0 +1,203 @@
+.taskForm {
+  display: flex;
+  align-items: center;
+  background-color: #bbb;
+  margin: 10px 0;
+  padding: 10px;
+  overflow: hidden;
+  margin: 0;
+}
+.add {
+  background: url('../../img/add-24px.svg');
+  height: 24px;
+  width: 24px;
+  flex: none;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.title {
+  flex: 1;
+  margin: 5px;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.addTask {
+  background-color: #008000;
+  color: #bbb;
+  height: 30px;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  margin: 10px 0;
+  padding: 10px;
+  margin: 0;
+  &:hover {
+    background-color: lemonchiffon;
+  }
+}
+
+.name {
+  margin: 5px;
+  border: none;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: italic;
+  flex: 1;
+  background-color: #ddd6;
+}
+.name:read-only {
+  cursor: default;
+  font-style: normal;
+  background-color: transparent;
+}
+.name:focus {
+  outline: none;
+}
+input[name='deadline'],
+.deadline {
+  margin: 5px;
+  border: none;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: italic;
+  display: block;
+  width: 170px;
+  background-color: #ddd6;
+}
+input[name='deadline']:read-only,
+.deadline:read-only {
+  cursor: default;
+  font-style: normal;
+  background-color: transparent;
+}
+input[name='deadline']:focus,
+.deadline:focus {
+  outline: none;
+}
+.buttonsCont {
+  display: flex;
+  width: 80px;
+  justify-content: center;
+  align-items: center;
+  button {
+    border: none;
+  }
+}
+
+.priority {
+  width: 30px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.priorityUp,
+.priorityDown {
+  display: block;
+  width: 24px;
+  height: 20px;
+  color: transparent;
+  &:hover {
+    cursor: pointer;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.priorityUp {
+  background: url('../../img/arrow_drop_up-24px.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.priorityDown {
+  background: url('../../img/arrow_drop_down-24px.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.priorityUp,
+.priorityDown {
+  position: relative;
+}
+.priorityUp::before,
+.priorityDown::before {
+  background-color: white;
+  border: 1px solid #888;
+  border-radius: 2px;
+  color: #444;
+  content: attr(data-tooltip);
+  display: none;
+  font-family: sans-serif;
+  font-size: 14px;
+  padding: 2px 5px;
+  position: absolute;
+  z-index: 1;
+}
+.priorityUp::before {
+  top: 10px;
+  left: -20px;
+}
+.priorityDown::before {
+  top: -10px;
+  left: -20px;
+}
+
+.priorityUp:hover:before,
+.priorityDown:hover::before {
+  display: block;
+}
+
+.submit {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url('../../img/check-24px.svg');
+  color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.edit {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url('../../img/edit-24px.svg');
+  color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+.delete {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url('../../img/delete-24px.svg');
+  color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+.hidden {
+  display: none;
+}
+.visible {
+  display: flex;
+}

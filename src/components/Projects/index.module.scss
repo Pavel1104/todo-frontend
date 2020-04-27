@@ -1,0 +1,136 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 15px 0;
+  & > form:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  & > form:last-child {
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+}
+
+.project {
+  display: flex;
+  overflow: hidden;
+  margin: 10px 0;
+  height: 24px;
+  padding: 10px;
+  align-items: center;
+  background-color: blue;
+  margin: 0;
+  &:hover {
+    cursor: pointer;
+    .buttonsCont {
+      display: flex;
+    }
+  }
+}
+.logo {
+  width: 24px;
+  height: 24px;
+  background: url('../../img/event_note-24px.svg');
+  flex: none;
+}
+.title {
+  margin: 5px;
+  border: none;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: italic;
+  color: white;
+  flex: 1;
+  background-color: #fff6;
+}
+.title:read-only {
+  cursor: default;
+  font-style: normal;
+  background-color: transparent;
+}
+.title:focus {
+  outline: none;
+}
+.buttonsCont {
+  display: none;
+  flex: none;
+  button {
+    border: none;
+  }
+}
+.submit {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url('../../img/check-24px.svg');
+  color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+.edit {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url('../../img/edit-24px.svg');
+  color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+.delete {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url('../../img/delete-24px.svg');
+  color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.addButton {
+  display: flex;
+  font-size: 18px;
+  width: 200px;
+  height: 30px;
+  align-self: center;
+  justify-content: center;
+  margin-top: 25px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.cancel {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url('../../img/clear-24px.svg');
+  color: transparent;
+  background-size: cover;
+  background-repeat: no-repeat;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.hidden {
+  display: none;
+}
+.visible {
+  display: flex;
+}
