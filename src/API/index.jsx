@@ -13,6 +13,7 @@ export const DebugData = (props) => {
 
 const axiosInstance = axios.create({
   baseURL: 'https://mysterious-basin-40091.herokuapp.com',
+  // baseURL: 'localhost:3000',
 })
 
 export const projectsService = {
@@ -36,7 +37,10 @@ export const projectsService = {
   },
   update: async function updateProject(projectID, params) {
     try {
-      const response = await axiosInstance.put(`/projects/${projectID}.json`, params)
+      const response = await axiosInstance.put(
+        `/projects/${projectID}.json`,
+        params,
+      )
       return response.data
     } catch (error) {
       console.error(error)
@@ -57,7 +61,9 @@ export const projectsService = {
 export const tasksService = {
   load: async function getTasks(projectID) {
     try {
-      const response = await axiosInstance.get(`/projects/${projectID}/tasks.json`)
+      const response = await axiosInstance.get(
+        `/projects/${projectID}/tasks.json`,
+      )
       return response.data
     } catch (error) {
       console.error(error)

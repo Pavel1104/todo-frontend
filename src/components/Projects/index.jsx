@@ -9,7 +9,7 @@ const Projects = () => {
   const [editableIDs, setEditable] = useState([])
   const [showForm, setShowForm] = useState(false)
   const initialValues = {
-    name:'',
+    name: '',
   }
   const [values, setValues] = useState(initialValues)
 
@@ -59,11 +59,10 @@ const Projects = () => {
     setProjects((prev) => prev.filter((v) => v.id !== id))
   }
 
-
   return (
     <>
       {projects.map((item) => {
-        const { id, name } = item
+        const { id, name, tasksOrder } = item
         const editable = editableIDs.indexOf(id) !== -1
         return (
           <Fragment key={id}>
@@ -116,7 +115,7 @@ const Projects = () => {
                   </button>
                 </div>
               </form>
-              <Tasks projectID={id} />
+              <Tasks projectID={id} tasksOrder={tasksOrder} />
             </div>
           </Fragment>
         )

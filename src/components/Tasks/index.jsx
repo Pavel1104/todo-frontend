@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { tasksService } from '../../API/index'
+import { tasksService, projectsService } from '../../API/index'
 import classes from './index.module.scss'
+import { ReactSortable } from 'react-sortablejs'
 
 const Tasks = (projectData) => {
   const [editableIDs, setEditable] = useState([])
 
-  const { projectID } = projectData
+  const { projectID, tasksOrder } = projectData
   const [tasks, setTasks] = useState([])
   const initialValues = {
     name: '',
@@ -18,7 +19,19 @@ const Tasks = (projectData) => {
   useEffect(() => {
     const loadTasks = async () => {
       const tasks = await tasksService.load(projectID)
-      setTasks(tasks.sort((a, b) => b.priority - a.priority))
+
+      const orderPattern = [].concat(
+        tasksOrder ? tasksOrder.split(',').map((e) => parseInt(e)) : [],
+        tasks.map((e) => {
+          return e.id
+        }),
+      )
+
+      setTasks(
+        tasks.sort((a, b) => {
+          return orderPattern.indexOf(a.id) - orderPattern.indexOf(b.id)
+        }),
+      )
     }
     loadTasks()
   }, [])
@@ -57,15 +70,8 @@ const Tasks = (projectData) => {
     })
   }
 
-  const changePriority = (id, priority) => {
-    setTasks((prev) => {
-      prev.find((v) => v.id === id).priority = priority
-      tasksService.update(
-        id,
-        prev.find((v) => v.id === id),
-      )
-      return [...prev].sort((a, b) => b.priority - a.priority)
-    })
+  const changePriority = (id, tasksOrder) => {
+    projectsService.update(id, { project: { tasksOrder } })
   }
 
   const onEdit = (id) => {
@@ -103,95 +109,93 @@ const Tasks = (projectData) => {
           </button>
         </div>
       </form>
-
-      {tasks.map((item) => {
-        const { id, name, isDone, priority, deadline } = item
-        const editable = editableIDs.indexOf(id) !== -1
-        return (
-          <form
-            key={id}
-            className={classes.task}
-            onSubmit={(e) => onSubmit(e, id)}
-          >
-            <input
-              type="checkbox"
-              name="isDone"
-              checked={isDone}
-              onChange={(e) => onIsDoneChange(id, e.target.checked)}
-            />
-            <input
-              className={classes.name}
-              type="text"
-              name="name"
-              value={name}
-              onChange={(e) => onEditValue(id, 'name', e.target.value)}
-              required={true}
-              placeholder="Project name"
-              readOnly={!editable}
-            />
-            <input
-              className={classes.deadline}
-              type="date"
-              name="deadline"
-              value={deadline}
-              onChange={(e) => onEditValue(id, 'deadline', e.target.value)}
-              placeholder="Deadline"
-              readOnly={!editable}
-            />
-            <div className={classes.buttonsCont}>
-              <div className={classes.priority}>
+      <ReactSortable
+        list={tasks}
+        setList={setTasks}
+        animation={400}
+        dataIdAttr="sort-id"
+        emptyInsertThreshold={5000}
+        easing="cubic-bezier(1, 0, 0, 1)"
+        ghostClass={classes.sortableGhost} // Class name for the drop placeholder
+        handle={'.' + classes.priority}
+        store={{
+          set: (sortable) => {
+            changePriority(projectID, sortable.toArray().join(','))
+          },
+        }}
+      >
+        {tasks.map((item) => {
+          const { id, name, isDone, deadline } = item
+          const editable = editableIDs.indexOf(id) !== -1
+          return (
+            <form
+              key={id}
+              sort-id={item.id}
+              className={classes.task}
+              onSubmit={(e) => onSubmit(e, id)}
+            >
+              <input
+                type="checkbox"
+                name="isDone"
+                checked={isDone}
+                onChange={(e) => onIsDoneChange(id, e.target.checked)}
+              />
+              <input
+                className={classes.name}
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => onEditValue(id, 'name', e.target.value)}
+                required={true}
+                placeholder="Project name"
+                readOnly={!editable}
+              />
+              <input
+                className={classes.deadline}
+                type="date"
+                name="deadline"
+                value={deadline}
+                onChange={(e) => onEditValue(id, 'deadline', e.target.value)}
+                placeholder="Deadline"
+                readOnly={!editable}
+              />
+              <div className={classes.buttonsCont}>
+                <div className={classes.priority} />
                 <button
-                  className={classes.priorityUp}
-                  type="button"
-                  data-tooltip={priority}
-                  onClick={() => changePriority(id, priority + 1)}
+                  className={[
+                    classes.submit,
+                    editable ? classes.visible : classes.hidden,
+                  ].join(' ')}
+                  type="submit"
+                  disabled={!editable}
                 >
-                  P up
+                  Submit
                 </button>
+
                 <button
-                  className={classes.priorityDown}
+                  className={[
+                    classes.edit,
+                    !editable ? classes.visible : classes.hidden,
+                  ].join(' ')}
                   type="button"
-                  data-tooltip={priority}
-                  disabled={priority === 0}
-                  onClick={(e) => changePriority(id, priority - 1)}
+                  onClick={() => onEdit(id)}
+                  disabled={editable}
                 >
-                  P down
+                  Edit
+                </button>
+
+                <button
+                  className={classes.delete}
+                  type="button"
+                  onClick={(e) => removeTask(id)}
+                >
+                  Delete
                 </button>
               </div>
-              <button
-                className={[
-                  classes.submit,
-                  editable ? classes.visible : classes.hidden,
-                ].join(' ')}
-                type="submit"
-                disabled={!editable}
-              >
-                Submit
-              </button>
-
-              <button
-                className={[
-                  classes.edit,
-                  !editable ? classes.visible : classes.hidden,
-                ].join(' ')}
-                type="button"
-                onClick={() => onEdit(id)}
-                disabled={editable}
-              >
-                Edit
-              </button>
-
-              <button
-                className={classes.delete}
-                type="button"
-                onClick={(e) => removeTask(id)}
-              >
-                Delete
-              </button>
-            </div>
-          </form>
-        )
-      })}
+            </form>
+          )
+        })}
+      </ReactSortable>
     </>
   )
 }
